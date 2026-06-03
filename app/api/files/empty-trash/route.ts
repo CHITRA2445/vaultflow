@@ -56,10 +56,12 @@ export async function DELETE() {
               });
 
               if (searchResults && searchResults.length > 0) {
-                await imagekit.deleteFile(searchResults[0].fileId);
-              } else {
-                await imagekit.deleteFile(imagekitFileId);
-              }
+        // Same 'as any' trick to bypass the TS error
+        const fileData = searchResults[0] as any;
+        await imagekit.deleteFile(fileData.fileId);
+      } else {
+        await imagekit.deleteFile(imagekitFileId);
+      }
             } catch (searchError) {
               console.error(
                 `Error searching for file in ImageKit:`,
